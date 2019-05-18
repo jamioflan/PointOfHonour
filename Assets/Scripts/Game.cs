@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
 		RESULTS,
 	}
 
+	public GameObject m_PressAScreen;
 	public Controller[] m_Controllers;
 
 	public Phase m_CurrentPhase { get; private set; } = Phase.START;
@@ -28,15 +29,11 @@ public class Game : MonoBehaviour
 		{
 			case Phase.START:
 			{
-				/*foreach (Controller controller in m_Controllers)
-				{
-					if (controller.HasPressedAnyButton())
-					{
-						m_CurrentPhase = Phase.CHARACTER_SELECT;
-					}
+				if(Input.GetAxis("Start") > 0.0f)
+				{ 
+					m_PressAScreen.SetActive(false);
+					m_CurrentPhase = Phase.CHARACTER_SELECT;
 				}
-				*/
-				m_CurrentPhase = Phase.CHARACTER_SELECT;
 				break;
 			}
 
