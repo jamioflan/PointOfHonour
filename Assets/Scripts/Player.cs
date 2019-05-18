@@ -19,6 +19,10 @@ public class Player : MonoBehaviour
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
+	private bool canDoubleJump;
+	private Vector3 myVelocity;
+	private float jumpTimer;
+	private float jumpHeight = 10f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -40,7 +44,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_CurrentHealth = m_InitialHealth;
-    }
+		jumpTimer = 0f;
+
+	}
 
     // Update is called once per frame
     void Update()
@@ -55,7 +61,41 @@ public class Player : MonoBehaviour
 		m_CurrentInput.block = Input.GetAxis(m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_SpecialAxis) > 0.0f;
 
-		//Active Player Movement
+		//X Axis Player Movement
+		CharacterController thisChar = GetComponent<CharacterController>();
+		myVelocity += new Vector3(0.01f*m_CurrentInput.moveX, 0, 0);
+
+		//Gravity
+		myVelocity += Physics.gravity;
+
+		//Player Jump
+		if (thisChar.isGrounded)
+		{
+			Debug.Log("Is Grounded");
+			canDoubleJump = true;
+		}
+
+		if (m_CurrentInput.jump && !m_LastInput.jump)
+		{
+			if (thisChar.isGrounded)
+			{
+				jumpTimer = 1.5f;
+			}
+			else if (canDoubleJump)
+			{
+				jumpTimer = 1f;
+				canDoubleJump = false;
+			}
+		}
+
+		if (jumpTimer > 0)
+		{
+			myVelocity += new Vector3(0, jumpHeight, 0);
+			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
+		}
+
+		// Push movement
+		thisChar.Move(myVelocity);
 
 		// Downgrade updates
 		// Fire update
