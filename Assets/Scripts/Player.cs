@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
+	private int consecJumps;
 	private Controller m_Controller;
 	private bool canDoubleJump;
 	private Vector3 myVelocity;
-	private float jumpTimer;
-	private float jumpHeight = 10f;
+	private float jumpHeight = 1f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -51,8 +51,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_CurrentHealth = m_InitialHealth;
-		jumpTimer = 0f;
-
 	}
 
     // Update is called once per frame
@@ -77,32 +75,26 @@ public class Player : MonoBehaviour
 		myVelocity += new Vector3(0.01f*m_CurrentInput.moveX, 0, 0);
 
 		//Gravity
-		myVelocity += Physics.gravity;
+		myVelocity += Physics.gravity*Time.deltaTime*0.01f;
 
 		//Player Jump
 		if (thisChar.isGrounded)
 		{
-			Debug.Log("Is Grounded");
-			canDoubleJump = true;
+			consecJumps = 0;
 		}
 
 		if (m_CurrentInput.jump && !m_LastInput.jump)
 		{
 			if (thisChar.isGrounded)
 			{
-				jumpTimer = 1.5f;
+				myVelocity += new Vector3(0, jumpHeight, 0);
+				consecJumps += 1;
 			}
-			else if (canDoubleJump)
-			{
-				jumpTimer = 1f;
-				canDoubleJump = false;
-			}
-		}
-
-		if (jumpTimer > 0)
-		{
-			myVelocity += new Vector3(0, jumpHeight, 0);
-			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
+//			else if (consecJumps <= 1)
+//			{
+//				myVelocity += new Vector3(0, 0.8f*jumpHeight, 0);
+//				consecJumps += 1;
+//			}
 		}
 
 		// Push movement
