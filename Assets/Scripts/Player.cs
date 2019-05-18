@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 	private Controller m_Controller;
 	private bool canDoubleJump;
 	private Vector3 myVelocity;
-	private float jumpHeight = 1f;
+	private float jumpHeight = 0.8f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -72,15 +72,17 @@ public class Player : MonoBehaviour
 
 		//X Axis Player Movement
 		CharacterController thisChar = GetComponent<CharacterController>();
-		myVelocity += new Vector3(0.01f*m_CurrentInput.moveX, 0, 0);
+		myVelocity.x = 0.5f * myVelocity.x;
+		myVelocity += new Vector3(0.1f*m_CurrentInput.moveX, 0, 0);
 
 		//Gravity
-		myVelocity += Physics.gravity*Time.deltaTime*0.01f;
+		myVelocity += Physics.gravity*Time.deltaTime*0.4f;
 
 		//Player Jump
 		if (thisChar.isGrounded)
 		{
 			consecJumps = 0;
+			myVelocity.y = 0;
 		}
 
 		if (m_CurrentInput.jump && !m_LastInput.jump)
