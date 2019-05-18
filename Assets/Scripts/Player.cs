@@ -76,7 +76,6 @@ public class Player : MonoBehaviour
 
 		// X Axis Player Movement
 		CharacterController thisChar = GetComponent<CharacterController>();
-<<<<<<< HEAD
 
 		// Switch directions quickly
 		if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(myVelocity.x))
@@ -88,13 +87,6 @@ public class Player : MonoBehaviour
 		myVelocity *= (1 - dragMag) * Mathf.Exp(-Time.deltaTime);
 		
 		myVelocity += new Vector3(moveSpeed * m_CurrentInput.moveX*Time.deltaTime, 0, 0);
-=======
-		myVelocity.x = 0.5f * myVelocity.x;
-		myVelocity += new Vector3(0.1f * m_CurrentInput.moveX, 0, 0);
-
-		//Gravity
-		myVelocity += Physics.gravity * Time.deltaTime * 0.4f;
->>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
 
 		// Player Jump & Gravity
 		if (thisChar.isGrounded)
@@ -114,7 +106,7 @@ public class Player : MonoBehaviour
 				consecJumps += 1;
 				jumpTimer = jumpLength;
 			}
-<<<<<<< HEAD
+			
 			else if (consecJumps < 2)
 			{
 				consecJumps += 1;
@@ -126,13 +118,6 @@ public class Player : MonoBehaviour
 		{
 			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
 			myVelocity.y = jumpMag;
-=======
-			//			else if (consecJumps <= 1)
-			//			{
-			//				myVelocity += new Vector3(0, 0.8f*jumpHeight, 0);
-			//				consecJumps += 1;
-			//			}
->>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
 		}
 
 		// Push movement

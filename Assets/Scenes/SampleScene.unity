@@ -704,9 +704,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!1 &1498205978
-=======
 --- !u!114 &1349474333 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2000826309513434667, guid: 50fedb98ab7c4104a937e5b9efa3126a,
@@ -720,7 +717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1488235689
->>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1136,7 +1132,6 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 1076323164}
-<<<<<<< HEAD
     - target: {fileID: 963194228, guid: 50fedb98ab7c4104a937e5b9efa3126a, type: 3}
       propertyPath: m_LocalPosition.z
       value: -7.58
@@ -1157,7 +1152,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 16.073
       objectReference: {fileID: 0}
-=======
->>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50fedb98ab7c4104a937e5b9efa3126a, type: 3}
