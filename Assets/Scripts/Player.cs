@@ -6,25 +6,26 @@ public class Player : MonoBehaviour
 {
 	// Public editor fields
 	public float m_InitialHealth = 100.0f;
-	public string m_MoveXAxis = "P1X";
-	public string m_MoveYAxis = "P1Y";
-	public string m_PunchAxis = "P1Punch";
-	public string m_JumpAxis = "P1Jump";
-	public string m_BlockAxis = "P1Block";
-	public string m_KickAxis = "P1Kick";
-	public string m_SpecialAxis = "P1Special";
 
 	// Internal workings
+	private bool m_IsActive = false;
 	private float m_CurrentHealth = 100.0f;
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
+	private Controller m_Controller;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
 	public ParticleSystem m_FireParticleGenerator;
 
 	// 
+
+	public void SetActive(Controller controller)
+	{
+		m_IsActive = active;
+		m_Controller = controller;
+	}
 
 	public void GiveDowngrade(Downgrade downgrade)
 	{
@@ -47,13 +48,13 @@ public class Player : MonoBehaviour
     {
 		// Movement update
 		m_LastInput = m_CurrentInput;
-		m_CurrentInput.moveX = Input.GetAxis(m_MoveXAxis);
-		m_CurrentInput.moveY = Input.GetAxis(m_MoveYAxis);
-		m_CurrentInput.jump = Input.GetAxis(m_JumpAxis) > 0.0f;
-		m_CurrentInput.punch = Input.GetAxis(m_PunchAxis) > 0.0f;
-		m_CurrentInput.kick = Input.GetAxis(m_KickAxis) > 0.0f;
-		m_CurrentInput.block = Input.GetAxis(m_BlockAxis) > 0.0f;
-		m_CurrentInput.special = Input.GetAxis(m_SpecialAxis) > 0.0f;
+		m_CurrentInput.moveX = Input.GetAxis(m_Controller.m_MoveXAxis);
+		m_CurrentInput.moveY = Input.GetAxis(m_Controller.m_MoveYAxis);
+		m_CurrentInput.jump = Input.GetAxis(m_Controller.m_JumpAxis) > 0.0f;
+		m_CurrentInput.punch = Input.GetAxis(m_Controller.m_PunchAxis) > 0.0f;
+		m_CurrentInput.kick = Input.GetAxis(m_Controller.m_KickAxis) > 0.0f;
+		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
+		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
 
 		//Active Player Movement
 
