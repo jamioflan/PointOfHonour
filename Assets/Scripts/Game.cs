@@ -12,7 +12,9 @@ public class Game : MonoBehaviour
 		RESULTS,
 	}
 
-	public Phase m_CurrentPhase { get; private set; }
+	public Controller[] m_Controllers;
+
+	public Phase m_CurrentPhase { get; private set; } = Phase.START;
 
     void Start()
     {
@@ -26,13 +28,35 @@ public class Game : MonoBehaviour
 		{
 			case Phase.START:
 			{
-				
+				foreach (Controller controller in m_Controllers)
+				{
+					if (controller.HasPressedAnyButton())
+					{
+						m_CurrentPhase = Phase.CHARACTER_SELECT;
+					}
+				}
 				break;
 			}
 
 			case Phase.CHARACTER_SELECT:
 			{
+				bool allReady = true;
+				foreach(Controller controller in m_Controllers)
+				{
+					if(!controller.IsReady())
+					{
+						allReady = false;
+					}
+				}
 
+				if(allReady)
+				{
+					m_CurrentPhase = Phase.FIGHT;
+					foreach (Controller controller in m_Controllers)
+					{
+						controller.StartGame();
+					}
+				}
 				break;
 			}
 		}

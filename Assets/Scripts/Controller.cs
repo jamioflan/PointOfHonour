@@ -15,9 +15,10 @@ public class Controller : MonoBehaviour
 	public Player[] playerPrefabOptions;
 	public Transform spawnPoint;
 
+	public bool HasPressedAnyButton() { return m_HasPressedAnyButton; }
 	public bool IsReady() { return m_Ready; }
-	public void StartGame() { m_IsPlaying = true; }
 
+	private bool m_HasPressedAnyButton = false;
 	private Player m_SpawnedPlayer;
 	private int m_SelectedPlayerIndex = 0;
 	private bool m_Ready;
@@ -39,6 +40,7 @@ public class Controller : MonoBehaviour
 
 	public void StartGame()
 	{
+		m_IsPlaying = true;
 		m_SpawnedPlayer.SetActive(this);
 	}
 
@@ -55,8 +57,10 @@ public class Controller : MonoBehaviour
 		{
 			// Just the controls we need
 			m_LastInput = m_CurrentInput;
-			m_CurrentInput.jump = Input.GetAxis(m_Controller.m_JumpAxis) > 0.0f;
-			m_CurrentInput.punch = Input.GetAxis(m_Controller.m_PunchAxis) > 0.0f;
+			m_CurrentInput.jump = Input.GetAxis(m_JumpAxis) > 0.0f;
+			m_CurrentInput.punch = Input.GetAxis(m_PunchAxis) > 0.0f;
+
+			m_HasPressedAnyButton = m_HasPressedAnyButton || m_CurrentInput.jump || m_CurrentInput.punch;
 
 			// Jump = Switch character
 			if (m_CurrentInput.jump && !m_LastInput.jump)

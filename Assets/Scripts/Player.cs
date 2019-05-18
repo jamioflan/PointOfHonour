@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
 	public void SetActive(Controller controller)
 	{
-		m_IsActive = active;
+		m_IsActive = true;
 		m_Controller = controller;
 	}
 
@@ -52,6 +52,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		// Skip update if we aren't active yet
+		if (!m_IsActive)
+			return;
+
 		// Movement update
 		m_LastInput = m_CurrentInput;
 		m_CurrentInput.moveX = Input.GetAxis(m_Controller.m_MoveXAxis);
