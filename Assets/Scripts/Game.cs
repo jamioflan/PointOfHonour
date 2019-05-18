@@ -28,13 +28,15 @@ public class Game : MonoBehaviour
 		{
 			case Phase.START:
 			{
-				foreach (Controller controller in m_Controllers)
+				/*foreach (Controller controller in m_Controllers)
 				{
 					if (controller.HasPressedAnyButton())
 					{
 						m_CurrentPhase = Phase.CHARACTER_SELECT;
 					}
 				}
+				*/
+				m_CurrentPhase = Phase.CHARACTER_SELECT;
 				break;
 			}
 
