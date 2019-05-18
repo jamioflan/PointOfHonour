@@ -34,6 +34,7 @@ public class Controller : MonoBehaviour
 		}
 		m_SelectedPlayerIndex = (m_SelectedPlayerIndex + 1) % playerPrefabOptions.Length;
 		m_SpawnedPlayer = Instantiate<Player>(playerPrefabOptions[m_SelectedPlayerIndex]);
+		m_SpawnedPlayer.SetInactive();
 		m_SpawnedPlayer.transform.position = spawnPoint.transform.position;
 		m_SpawnedPlayer.transform.rotation = Quaternion.identity;
 	}

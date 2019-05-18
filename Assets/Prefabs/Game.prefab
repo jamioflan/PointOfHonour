@@ -98,13 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4faf6ba1cb4a5d4aa92cac9f66dd7e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MoveXAxis: P1X
-  m_MoveYAxis: P1Y
-  m_PunchAxis: P1Punch
-  m_JumpAxis: P1Jump
-  m_BlockAxis: P1Block
-  m_KickAxis: P1Kick
-  m_SpecialAxis: P1Special
+  m_MoveXAxis: P2X
+  m_MoveYAxis: P2Y
+  m_PunchAxis: P2Punch
+  m_JumpAxis: P2Jump
+  m_BlockAxis: P2Block
+  m_KickAxis: P2Kick
+  m_SpecialAxis: P2Special
   playerPrefabOptions:
   - {fileID: 2966588753702724568, guid: 4fadc918fc4f38847b200c05b8060f66, type: 3}
   - {fileID: 2966588753702724568, guid: 4fadc918fc4f38847b200c05b8060f66, type: 3}

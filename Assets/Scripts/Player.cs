@@ -31,6 +31,12 @@ public class Player : MonoBehaviour
 		m_Controller = controller;
 	}
 
+	public void SetInactive()
+	{
+		m_IsActive = false;
+		m_Controller = null;
+	}
+
 	public void GiveDowngrade(Downgrade downgrade)
 	{
 		m_Downgrades.Add(downgrade);
