@@ -37,8 +37,31 @@ public class PlayerAnimation : MonoBehaviour
 		m_CurrentAnim = anim;
 		m_NextAnim = nextAnim;
 		m_CurrentAnimProgress = 0.0f;
+		UpdateCurrentFrame();
 
 		m_SortedAnims[m_CurrentAnim].m_Root.SetActive(true);
+	}
+
+	private void UpdateCurrentFrame()
+	{
+		AnimData currentAnim = m_SortedAnims[m_CurrentAnim];
+
+		// Find current frame and activate it
+		float negTimeRemainig = m_CurrentAnimProgress;
+		for (int i = 0; i < currentAnim.m_Frames.Length; i++)
+		{
+			bool isCurrentFrame = negTimeRemainig >= 0.0f && negTimeRemainig < currentAnim.m_Frames[i].m_Duration;
+
+			negTimeRemainig -= currentAnim.m_Frames[i].m_Duration;
+
+			currentAnim.m_Frames[i].m_Frame.SetActive(isCurrentFrame);
+		}
+
+		// If we finished the anim, move on
+		if (negTimeRemainig >= 0.0f)
+		{
+			SetAnimationInstant(m_NextAnim, Anim.IDLE);
+		}
 	}
 
 	void Start()
@@ -54,25 +77,8 @@ public class PlayerAnimation : MonoBehaviour
 
 	void Update()
 	{
-		AnimData currentAnim = m_SortedAnims[m_CurrentAnim];
-
 		m_CurrentAnimProgress += Time.deltaTime;
 
-		// Find current frame and activate it
-		float negTimeRemainig = m_CurrentAnimProgress;
-		for(int i = 0; i < currentAnim.m_Frames.Length; i++)
-		{
-			bool isCurrentFrame = negTimeRemainig >= 0.0f && negTimeRemainig < currentAnim.m_Frames[i].m_Duration;
-
-			negTimeRemainig -= currentAnim.m_Frames[i].m_Duration;
-
-			currentAnim.m_Frames[i].m_Frame.SetActive(isCurrentFrame);
-		}
-
-		// If we finished the anim, move on
-		if(negTimeRemainig >= 0.0f)
-		{
-			SetAnimationInstant(m_NextAnim, Anim.IDLE);
-		}
+		UpdateCurrentFrame();
 	}
 }

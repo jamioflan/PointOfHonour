@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
 		m_CurrentInput.block = Input.GetAxis(m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_SpecialAxis) > 0.0f;
 
+		//Active Player Movement
 
 		// Downgrade updates
 		// Fire update
