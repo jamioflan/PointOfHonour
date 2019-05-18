@@ -13,11 +13,15 @@ public class Player : MonoBehaviour
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
-	private int consecJumps;
+	private int consecJumps = 0;
 	private Controller m_Controller;
-	private bool canDoubleJump;
 	private Vector3 myVelocity;
-	private float jumpHeight = 0.8f;
+	private float jumpTimer;
+	private readonly float jumpLength = 0.1f;
+	private readonly float jumpMag = 0.3f;
+	private readonly float moveSpeed = 1.3f;
+	private readonly float gravityMag = 0.2f;
+	private readonly float dragMag = 0.13f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -53,9 +57,9 @@ public class Player : MonoBehaviour
         m_CurrentHealth = m_InitialHealth;
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 		// Skip update if we aren't active yet
 		if (!m_IsActive)
 			return;
@@ -70,37 +74,96 @@ public class Player : MonoBehaviour
 		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
 
-		//X Axis Player Movement
+		// X Axis Player Movement
 		CharacterController thisChar = GetComponent<CharacterController>();
+<<<<<<< HEAD
+
+		// Switch directions quickly
+		if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(myVelocity.x))
+		{
+			myVelocity.x = 0;
+		}
+
+		// Drag
+		myVelocity *= (1 - dragMag) * Mathf.Exp(-Time.deltaTime);
+		
+		myVelocity += new Vector3(moveSpeed * m_CurrentInput.moveX*Time.deltaTime, 0, 0);
+=======
 		myVelocity.x = 0.5f * myVelocity.x;
-		myVelocity += new Vector3(0.1f*m_CurrentInput.moveX, 0, 0);
+		myVelocity += new Vector3(0.1f * m_CurrentInput.moveX, 0, 0);
 
 		//Gravity
-		myVelocity += Physics.gravity*Time.deltaTime*0.4f;
+		myVelocity += Physics.gravity * Time.deltaTime * 0.4f;
+>>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
 
-		//Player Jump
+		// Player Jump & Gravity
 		if (thisChar.isGrounded)
 		{
 			consecJumps = 0;
 			myVelocity.y = 0;
 		}
+		else
+		{
+			myVelocity += Physics.gravity * Time.deltaTime * gravityMag;
+		}
 
-		if (m_CurrentInput.jump && !m_LastInput.jump)
+		if (m_CurrentInput.jump && !m_LastInput.jump && jumpTimer == 0)
 		{
 			if (thisChar.isGrounded)
 			{
-				myVelocity += new Vector3(0, jumpHeight, 0);
 				consecJumps += 1;
+				jumpTimer = jumpLength;
 			}
-//			else if (consecJumps <= 1)
-//			{
-//				myVelocity += new Vector3(0, 0.8f*jumpHeight, 0);
-//				consecJumps += 1;
-//			}
+<<<<<<< HEAD
+			else if (consecJumps < 2)
+			{
+				consecJumps += 1;
+				jumpTimer = 0.75f * jumpLength;
+			}
+		}
+
+		if (jumpTimer > 0)
+		{
+			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
+			myVelocity.y = jumpMag;
+=======
+			//			else if (consecJumps <= 1)
+			//			{
+			//				myVelocity += new Vector3(0, 0.8f*jumpHeight, 0);
+			//				consecJumps += 1;
+			//			}
+>>>>>>> a5dc038a9a3599ea375b57bdb2df0bc0d782d00e
 		}
 
 		// Push movement
 		thisChar.Move(myVelocity);
+
+		// Update current attack
+		if (m_CurrentAttack != AttackType.NONE)
+		{
+			m_CurrentLockoutTimer -= Time.deltaTime;
+			if (m_CurrentLockoutTimer <= 0.0f)
+			{
+				EndAttack();
+				StartAttack(AttackType.NONE, 0.0f);
+			}
+		}
+		// If we aren't locked out, check for attack input
+		if (m_CurrentLockoutTimer <= 0.0f)
+		{
+			// Punch
+			if (m_CurrentInput.punch && !m_LastInput.punch)
+			{
+				StartAttack(AttackType.PUNCH, m_PunchLockoutTime);
+			}
+			// Kick
+			if(m_CurrentInput.kick && !m_LastInput.kick)
+			{
+				StartAttack(AttackType.KICK, m_KickLockoutTime);
+			}
+		}
+
+		
 
 		// Downgrade updates
 		// Fire update
@@ -111,4 +174,82 @@ public class Player : MonoBehaviour
             m_CurrentHealth = Mathf.Max(m_CurrentHealth - 2, 25);
         }
     }
+
+	private void EndAttack()
+	{
+		switch (m_CurrentAttack)
+		{
+			case AttackType.KICK:
+				// Kick happens at the end
+				foreach (Collider collider in Physics.OverlapSphere(m_KickVolume.center, m_KickVolume.radius))
+				{
+					Player player = collider.GetComponent<Player>();
+					if (player != this)
+					{
+						player.Attack(m_KickDamage);
+					}
+				}
+				break;
+		}
+	}
+
+	private void StartAttack(AttackType type, float timer)
+	{
+		if (m_CurrentAttack != AttackType.NONE)
+		{
+			m_CurrentAttack = type;
+			m_CurrentLockoutTimer = timer;
+
+			switch (m_CurrentAttack)
+			{
+				case AttackType.PUNCH:
+					// Punch happens immediately
+					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.center, m_PunchVolume.radius))
+					{
+						Player player = collider.GetComponent<Player>();
+						if (player != this)
+						{
+							player.Attack(m_PunchDamage);
+						}
+					}
+					break;
+
+			}
+		}
+	}
+
+	public void Attack(int damage)
+	{
+		m_CurrentHealth -= damage;
+		if (m_CurrentHealth <= 0)
+			Die();
+	}
+
+	public void Die()
+	{
+
+	}
+
+	private enum AttackType
+	{
+		NONE,
+		PUNCH,
+		KICK,
+		SPECIAL_THUNK,
+		SPECIAL_DIGITO,
+		SPECIAL_ANGRY,
+	}
+
+	[Header("Punch")]
+	public float m_PunchLockoutTime = 0.5f;
+	public int m_PunchDamage = 10;
+	public SphereCollider m_PunchVolume;
+
+	[Header("Kick")]
+	public float m_KickLockoutTime = 1.5f;
+	public int m_KickDamage = 32;
+	public SphereCollider m_KickVolume;
+
+	private AttackType m_CurrentAttack = AttackType.NONE;
+	private float m_CurrentLockoutTimer = 0.0f;
 }
