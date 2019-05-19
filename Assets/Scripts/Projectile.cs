@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
 			if (player != null && player != this)
 			{
 				player.Attack(damage);
-				Destroy(this);
+				Destroy(gameObject);
 				return;
 			}
 		}
