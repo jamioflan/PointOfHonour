@@ -18,15 +18,11 @@ public class Player : MonoBehaviour
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
-	private int consecJumps = 0;
+	private int airJumps = 0;
 	private Controller m_Controller;
 	private Vector3 myVelocity;
-	private float jumpTimer;
-	private readonly float jumpLength = 0.1f;
-	private readonly float jumpMag = 0.3f;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
-	private readonly float dragMag = 0.13f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -155,15 +151,27 @@ public class Player : MonoBehaviour
 		if (m_CurrentInput.moveX < 0.0f && m_Vel.x > 0.0f)
 			m_Vel.x = 0.0f;
 
-		if(onFloor)
+		if (onFloor)
+		{
+			airJumps = 0;
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
+		}
 		else
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX * 0.75f, 0, 0);
 
 		// Jump
 		if (m_CurrentInput.jump && !m_LastInput.jump)
 		{
-			m_Vel.y = 26.0f;
+			if(onFloor)
+			{
+				m_Vel.y = 26.0f;
+				airJumps = 0;
+			}
+			else if (airJumps < 1)
+			{
+				m_Vel.y = 20.0f;
+				airJumps += 1;
+			}
 		}
 
 		// Collision detec
