@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	// Public editor fields
-	public float m_InitialHealth = 100.0f;
+	public int m_InitialHealth = 10;
 
 	// Internal workings
 	private bool m_IsActive = false;
-	private float m_CurrentHealth = 100.0f;
+	private PlayerStatBlock m_StatBlock;
+	private int m_CurrentHealth = 10;
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
 	{
 		m_IsActive = true;
 		m_Controller = controller;
+		m_StatBlock = controller.statBlock;
+		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 	}
 
 	public void SetInactive()
@@ -44,6 +47,20 @@ public class Player : MonoBehaviour
 	public void GiveDowngrade(Downgrade downgrade)
 	{
 		m_Downgrades.Add(downgrade);
+
+		switch (downgrade)
+		{
+			case Downgrade.ON_FIRE:
+				m_StatBlock.m_OnFire.SetActive(true);
+				break;
+			case Downgrade.WINDY:
+				m_StatBlock.m_Windy.SetActive(true);
+				break;
+			case Downgrade.BACK_ATTACK:
+				m_StatBlock.m_Back.SetActive(true);
+				break;
+		}
+		
 	}
 
 	public bool HasDowngrade(Downgrade downgrade)
@@ -279,6 +296,7 @@ public class Player : MonoBehaviour
 	public void Attack(int damage)
 	{
 		m_CurrentHealth -= damage;
+		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 		if (m_CurrentHealth <= 0)
 			Die();
 	}
@@ -300,12 +318,12 @@ public class Player : MonoBehaviour
 
 	[Header("Punch")]
 	public float m_PunchLockoutTime = 0.5f;
-	public int m_PunchDamage = 10;
+	public int m_PunchDamage = 1;
 	public SphereCollider m_PunchVolume;
 
 	[Header("Kick")]
 	public float m_KickLockoutTime = 1.5f;
-	public int m_KickDamage = 32;
+	public int m_KickDamage = 2;
 	public SphereCollider m_KickVolume;
 
 	private AttackType m_CurrentAttack = AttackType.NONE;

@@ -5,5 +5,6 @@ using UnityEngine;
 public enum Downgrade
 {
     ON_FIRE,
-
+	WINDY,
+	BACK_ATTACK,
 }
