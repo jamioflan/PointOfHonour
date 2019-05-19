@@ -7,6 +7,10 @@ public class Player : MonoBehaviour
 	// Public editor fields
 	public int m_InitialHealth = 10;
 
+	public string dispName = "UNNAMED";
+
+	public bool Ded() { return m_CurrentHealth <= 0; }
+
 	// Internal workings
 	private bool m_IsActive = false;
 	private PlayerStatBlock m_StatBlock;
@@ -29,7 +33,7 @@ public class Player : MonoBehaviour
 	public ParticleSystem m_FireParticleGenerator;
 
 	// 
-
+	private PlayerAnimation m_animation;
 	public void SetActive(Controller controller)
 	{
 		m_IsActive = true;
@@ -43,6 +47,8 @@ public class Player : MonoBehaviour
 		m_IsActive = false;
 		m_Controller = null;
 	}
+
+	public int NumDowngrades() { return m_Downgrades.Count; }
 
 	public void GiveDowngrade(Downgrade downgrade)
 	{
@@ -72,6 +78,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_CurrentHealth = m_InitialHealth;
+		m_animation = GetComponent<PlayerAnimation>();
 	}
 
 	// Update is called once per frame
