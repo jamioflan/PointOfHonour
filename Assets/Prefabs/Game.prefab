@@ -690,6 +690,7 @@ MonoBehaviour:
   - {fileID: 3581329686658960805}
   m_Controllers:
   - {fileID: 2000826308314828134}
+  - {fileID: 2000826309513434667}
   winnerText: {fileID: 497061492}
   restartText: {fileID: 1467449245}
 --- !u!1 &2280069797157719701
