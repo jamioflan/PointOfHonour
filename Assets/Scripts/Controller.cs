@@ -67,8 +67,8 @@ public class Controller : MonoBehaviour
 
 			m_HasPressedAnyButton = m_HasPressedAnyButton || m_CurrentInput.jump || m_CurrentInput.punch;
 
-			// Jump = Switch character
-			if (m_CurrentInput.jump && !m_LastInput.jump)
+			// Punch = Switch character
+			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{
 				if(m_Ready)
 				{
@@ -80,8 +80,8 @@ public class Controller : MonoBehaviour
 				}
 			}
 
-			// Punch = Confirm character
-			if (m_CurrentInput.punch && !m_LastInput.punch)
+			// Jump = Confirm character
+			if (m_CurrentInput.jump && !m_LastInput.jump)
 			{
 				m_Ready = true;
 			}
