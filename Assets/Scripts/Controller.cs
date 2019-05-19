@@ -14,9 +14,11 @@ public class Controller : MonoBehaviour
 
 	public Player[] playerPrefabOptions;
 	public Transform spawnPoint;
+	public PlayerStatBlock statBlock;
 
 	public bool HasPressedAnyButton() { return m_HasPressedAnyButton; }
 	public bool IsReady() { return m_Ready; }
+	public Player player() { return m_IsPlaying ? m_SpawnedPlayer : null;  }
 
 	private bool m_HasPressedAnyButton = false;
 	private Player m_SpawnedPlayer;

@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c9082b4f69244489d0c5fee6803b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InitialHealth: 100
+  m_InitialHealth: 10
   m_FireParticleGenerator: {fileID: 0}
   m_PunchLockoutTime: 0.5
   m_PunchDamage: 10

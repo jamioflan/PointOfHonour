@@ -5,19 +5,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	// Public editor fields
-	public float m_InitialHealth = 100.0f;
+	public int m_InitialHealth = 10;
 
 	// Internal workings
 	private bool m_IsActive = false;
-	private float m_CurrentHealth = 100.0f;
+	private PlayerStatBlock m_StatBlock;
+	private int m_CurrentHealth = 10;
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput;
 	private Controls m_LastInput;
 	private int consecJumps = 0;
 	private Controller m_Controller;
+	private Vector3 myVelocity;
+	private float jumpTimer;
+	private readonly float jumpLength = 0.1f;
+	private readonly float jumpMag = 0.3f;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
-	private PlayerAnimation m_animation;
+	private readonly float dragMag = 0.13f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -29,6 +34,8 @@ public class Player : MonoBehaviour
 	{
 		m_IsActive = true;
 		m_Controller = controller;
+		m_StatBlock = controller.statBlock;
+		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 	}
 
 	public void SetInactive()
@@ -40,6 +47,20 @@ public class Player : MonoBehaviour
 	public void GiveDowngrade(Downgrade downgrade)
 	{
 		m_Downgrades.Add(downgrade);
+
+		switch (downgrade)
+		{
+			case Downgrade.ON_FIRE:
+				m_StatBlock.m_OnFire.SetActive(true);
+				break;
+			case Downgrade.WINDY:
+				m_StatBlock.m_Windy.SetActive(true);
+				break;
+			case Downgrade.BACK_ATTACK:
+				m_StatBlock.m_Back.SetActive(true);
+				break;
+		}
+		
 	}
 
 	public bool HasDowngrade(Downgrade downgrade)
@@ -50,7 +71,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		m_animation = GetComponent<PlayerAnimation>();
         m_CurrentHealth = m_InitialHealth;
 	}
 
@@ -70,6 +90,57 @@ public class Player : MonoBehaviour
 		m_CurrentInput.kick = Input.GetAxis(m_Controller.m_KickAxis) > 0.0f;
 		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
+
+		/*
+		// X Axis Player Movement
+		CharacterController thisChar = GetComponent<CharacterController>();
+
+		// Switch directions quickly
+		if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(myVelocity.x))
+		{
+			myVelocity.x = 0;
+		}
+
+		// Drag
+		myVelocity *= (1 - dragMag) * Mathf.Exp(-Time.deltaTime);
+		
+		myVelocity += new Vector3(moveSpeed * m_CurrentInput.moveX*Time.deltaTime, 0, 0);
+
+		// Player Jump & Gravity
+		if (thisChar.isGrounded)
+		{
+			consecJumps = 0;
+			myVelocity.y = 0;
+		}
+		else
+		{
+			myVelocity += Physics.gravity * Time.deltaTime * gravityMag;
+		}
+
+		if (m_CurrentInput.jump && !m_LastInput.jump && jumpTimer == 0)
+		{
+			if (thisChar.isGrounded)
+			{
+				consecJumps += 1;
+				jumpTimer = jumpLength;
+			}
+			
+			else if (consecJumps < 2)
+			{
+				consecJumps += 1;
+				jumpTimer = 0.75f * jumpLength;
+			}
+		}
+
+		if (jumpTimer > 0)
+		{
+			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
+			myVelocity.y = jumpMag;
+		}
+
+		// Push movement
+		thisChar.Move(myVelocity);
+		*/
 
 		UpdatePhysics();
 
@@ -134,28 +205,14 @@ public class Player : MonoBehaviour
 			m_Vel.x = 0.0f;
 
 		if(onFloor)
-		{
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
-			consecJumps = 0;
-		}
 		else
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX * 0.75f, 0, 0);
 
 		// Jump
 		if (m_CurrentInput.jump && !m_LastInput.jump)
 		{
-			if (onFloor)
-			{
-				m_Vel.y = 26.0f;
-				consecJumps = 1;
-				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
-			}
-			else if (consecJumps < 2)
-			{
-				m_Vel.y = 20.0f;
-				consecJumps = Mathf.Max(consecJumps + 1,2);
-				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
-			}
+			m_Vel.y = 26.0f;
 		}
 
 		// Collision detec
@@ -188,10 +245,6 @@ public class Player : MonoBehaviour
 		if(onFloor)
 		{
 			m_Vel.y = 0.0f;
-			if (m_animation.getCurrentAnimation() == Anim.JUMP)
-			{
-				m_animation.SetAnimationInstant(Anim.IDLE, Anim.IDLE);
-			}
 		}
 
 		m_Vel.x *= 0.65f;// * Mathf.Exp(-Time.deltaTime);
@@ -252,6 +305,7 @@ public class Player : MonoBehaviour
 	public void Attack(int damage)
 	{
 		m_CurrentHealth -= damage;
+		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 		if (m_CurrentHealth <= 0)
 			Die();
 	}
@@ -273,12 +327,12 @@ public class Player : MonoBehaviour
 
 	[Header("Punch")]
 	public float m_PunchLockoutTime = 0.5f;
-	public int m_PunchDamage = 10;
+	public int m_PunchDamage = 1;
 	public SphereCollider m_PunchVolume;
 
 	[Header("Kick")]
 	public float m_KickLockoutTime = 1.5f;
-	public int m_KickDamage = 32;
+	public int m_KickDamage = 2;
 	public SphereCollider m_KickVolume;
 
 	private AttackType m_CurrentAttack = AttackType.NONE;
