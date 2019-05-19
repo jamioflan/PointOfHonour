@@ -154,6 +154,7 @@ public class Player : MonoBehaviour
 		if (onFloor)
 		{
 			airJumps = 0;
+			m_animation.SetAnimationInstant(Anim.IDLE, Anim.IDLE);
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
 		}
 		else
@@ -166,11 +167,13 @@ public class Player : MonoBehaviour
 			{
 				m_Vel.y = 26.0f;
 				airJumps = 0;
+				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 			else if (airJumps < 1)
 			{
 				m_Vel.y = 20.0f;
 				airJumps += 1;
+				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 		}
 
