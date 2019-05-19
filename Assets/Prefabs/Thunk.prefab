@@ -546,21 +546,21 @@ MonoBehaviour:
   m_KickDamage: 2
   m_KickVolume: {fileID: 3534735976151135636}
   m_HitVolsL:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 3545796966367133582}
+  - {fileID: 1802621907640230544}
+  - {fileID: 9146523311280091914}
+  - {fileID: 5950758478823102738}
   m_HitVolsR:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8746562868262829587}
+  - {fileID: 9214660366952700006}
+  - {fileID: 922741242000892456}
+  - {fileID: 6028716481956711}
   m_ThunkTimers:
-  - 0
-  - 0
-  - 0
-  - 0
-  m_SpecialLockoutTime: 2
+  - 0.85
+  - 0.266
+  - 0.233
+  - 0.2
+  m_SpecialLockoutTime: 1.6
 --- !u!1 &2966588753751289082
 GameObject:
   m_ObjectHideFlags: 0
