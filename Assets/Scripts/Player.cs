@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
 	private PlayerStatBlock m_StatBlock;
 	private int m_CurrentHealth = 10;
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
-	private Controls m_CurrentInput;
-	private Controls m_LastInput;
+	private Controls m_CurrentInput = new Controls();
+	private Controls m_LastInput = new Controls();
 	private int airJumps = 0;
 	private Controller m_Controller;
 	private Vector3 myVelocity;
@@ -85,14 +85,21 @@ public class Player : MonoBehaviour
 			return;
 
 		// Movement update
-		m_LastInput = m_CurrentInput;
+		m_LastInput.moveX = m_CurrentInput.moveX;
+		m_LastInput.moveY = m_CurrentInput.moveY;
+		m_LastInput.jump = m_CurrentInput.jump;
+		m_LastInput.punch = m_CurrentInput.punch;
+		m_LastInput.kick = m_CurrentInput.kick;
+		m_LastInput.block = m_CurrentInput.block;
+		m_LastInput.special = m_CurrentInput.special;
+
 		m_CurrentInput.moveX = Input.GetAxis(m_Controller.m_MoveXAxis);
 		m_CurrentInput.moveY = Input.GetAxis(m_Controller.m_MoveYAxis);
-		m_CurrentInput.jump = Input.GetAxis(m_Controller.m_JumpAxis) > 0.0f;
-		m_CurrentInput.punch = Input.GetAxis(m_Controller.m_PunchAxis) > 0.0f;
-		m_CurrentInput.kick = Input.GetAxis(m_Controller.m_KickAxis) > 0.0f;
-		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
-		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
+		m_CurrentInput.jump = Input.GetButton(m_Controller.m_JumpAxis);
+		m_CurrentInput.punch = Input.GetButton(m_Controller.m_PunchAxis);
+		m_CurrentInput.kick = Input.GetButton(m_Controller.m_KickAxis);
+		m_CurrentInput.block = Input.GetButton(m_Controller.m_BlockAxis);
+		m_CurrentInput.special = Input.GetButton(m_Controller.m_SpecialAxis);
 
 		UpdatePhysics();
 
@@ -109,6 +116,7 @@ public class Player : MonoBehaviour
 		// If we aren't locked out, check for attack input
 		if (m_CurrentLockoutTimer <= 0.0f)
 		{
+			Debug.Log(name + " " + m_CurrentInput.punch);
 			// Punch
 			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{

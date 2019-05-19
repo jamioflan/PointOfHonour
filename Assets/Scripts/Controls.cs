@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct Controls
+public class Controls
 {
 	public float moveX;
 	public float moveY;

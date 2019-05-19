@@ -25,8 +25,8 @@ public class Controller : MonoBehaviour
 	private int m_SelectedPlayerIndex = 0;
 	private bool m_Ready;
 	private bool m_IsPlaying = false;
-	private Controls m_LastInput;
-	private Controls m_CurrentInput;
+	private Controls m_LastInput = new Controls();
+	private Controls m_CurrentInput = new Controls();
 
 	public void CycleCharacter()
 	{
@@ -59,7 +59,8 @@ public class Controller : MonoBehaviour
 		if (!m_IsPlaying)
 		{
 			// Just the controls we need
-			m_LastInput = m_CurrentInput;
+			m_LastInput.jump = m_CurrentInput.jump;
+			m_LastInput.punch = m_CurrentInput.punch;
 			m_CurrentInput.jump = Input.GetAxis(m_JumpAxis) > 0.0f;
 			m_CurrentInput.punch = Input.GetAxis(m_PunchAxis) > 0.0f;
 
