@@ -98,27 +98,28 @@ public class Game : MonoBehaviour
 		}
     }
 
-	private void UpdatePlayer( Player update, Player other )
+	private void UpdatePlayer( Controller update, Controller other )
 	{
-		if (update.Ded())
+		if (update.player().Ded())
 		{
-			switch (other.NumDowngrades())
+			switch (other.player().NumDowngrades())
 			{
 				case 0:
-					other.GiveDowngrade(Downgrade.WINDY);
+					other.player().GiveDowngrade(Downgrade.WINDY);
 					break;
 				case 1:
-					other.GiveDowngrade(Downgrade.BACK_ATTACK);
+					other.player().GiveDowngrade(Downgrade.BACK_ATTACK);
 					break;
 				case 2:
-					other.GiveDowngrade(Downgrade.ON_FIRE);
+					other.player().GiveDowngrade(Downgrade.ON_FIRE);
 					break;
 				case 3:
-					DeclareWinner(other);
+					DeclareWinner(other.player());
 					break;
 			}
 
-			//update.Respawn();
+			update.player().Respawn();
+			update.player().transform.position = update.spawnPoint;
 		}
 	}
 

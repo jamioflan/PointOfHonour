@@ -271,7 +271,13 @@ public class Player : MonoBehaviour
 
 	public void Die()
 	{
+		m_CurrentHealth = 0;
+	}
 
+	public void Respawn()
+	{
+		m_CurrentHealth = m_InitialHealth;
+		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 	}
 
 	private enum AttackType
