@@ -562,6 +562,10 @@ MonoBehaviour:
   - 0.233
   - 0.2
   m_SpecialLockoutTime: 1.6
+  proj: {fileID: 0}
+  muzzle: {fileID: 0}
+  bulletSped: 1
+  m_SpecialAtk: 3
 --- !u!136 &1770932327926319173
 CapsuleCollider:
   m_ObjectHideFlags: 0
