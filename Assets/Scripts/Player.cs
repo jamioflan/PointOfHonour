@@ -292,7 +292,14 @@ public class Player : MonoBehaviour
 						Player player = collider.GetComponent<Player>();
 						if (player != null && player != this)
 						{
-							player.Attack(m_PunchDamage);
+							if (HasDowngrade(Downgrade.ON_FIRE))
+							{
+								player.Attack(m_PunchDamage*2);
+							}
+							else
+							{
+								player.Attack(m_PunchDamage);
+							}
 						}
 					}
 					break;
