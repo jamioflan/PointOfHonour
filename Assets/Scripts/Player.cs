@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
 	private float jumpTimer;
 	private readonly float jumpLength = 0.1f;
 	private readonly float jumpMag = 0.3f;
-	private readonly float moveSpeed = 1.3f;
-	private readonly float gravityMag = 0.2f;
+	private readonly float moveSpeed = 4.0f;
+	private readonly float gravityMag = 0.15f;
 	private readonly float dragMag = 0.13f;
 
 	// On Fire Runtime Data
@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
 		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
 
+		/*
 		// X Axis Player Movement
 		CharacterController thisChar = GetComponent<CharacterController>();
 
@@ -122,6 +123,9 @@ public class Player : MonoBehaviour
 
 		// Push movement
 		thisChar.Move(myVelocity);
+		*/
+
+		UpdatePhysics();
 
 		// Update current attack
 		if (m_CurrentAttack != AttackType.NONE)
@@ -159,6 +163,75 @@ public class Player : MonoBehaviour
             m_CurrentHealth = Mathf.Max(m_CurrentHealth - 2, 25);
         }
     }
+
+	private Vector3 m_Vel = Vector3.zero;
+
+	private void UpdatePhysics()
+	{
+		// Drag and gravity
+		m_Vel += Physics.gravity * gravityMag;
+
+		// Move input
+		// Switch directions quickly
+		//if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(m_Vel.x))
+		//{
+		//	m_Vel.x = 0;
+		//}
+		if (m_CurrentInput.moveX > 0.0f && m_Vel.x < 0.0f)
+			m_Vel.x = 0.0f;
+		if (m_CurrentInput.moveX < 0.0f && m_Vel.x > 0.0f)
+			m_Vel.x = 0.0f;
+
+		if(onFloor)
+			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
+		else
+			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX * 0.75f, 0, 0);
+
+		// Jump
+		if (m_CurrentInput.jump && !m_LastInput.jump)
+		{
+			m_Vel.y = 26.0f;
+		}
+
+		// Collision detec
+		Vector3 target = transform.position + m_Vel * Time.deltaTime;
+		onFloor = false;
+		if (-7.5f <= target.x && target.x <= 7.5f && transform.position.y >= 0.0f && target.y <= 0.0f)
+		{
+			target.y = 0.0f;
+			onFloor = true;
+		}
+
+		if (-4.5f <= target.x && target.x <= -1.5f && transform.position.y >= 2.0f && target.y <= 2.0f)
+		{
+			target.y = 2.0f;
+			onFloor = true;
+		}
+
+		if (1.5f <= target.x && target.x <= 4.5f && transform.position.y >= 2.0f && target.y <= 2.0f)
+		{
+			target.y = 2.0f;
+			onFloor = true;
+		}
+
+		if (-1.5f <= target.x && target.x <= 1.5f && transform.position.y >= 4.0f && target.y <= 4.0f)
+		{
+			target.y = 4.0f;
+			onFloor = true;
+		}
+
+		if(onFloor)
+		{
+			m_Vel.y = 0.0f;
+		}
+
+		m_Vel.x *= 0.65f;// * Mathf.Exp(-Time.deltaTime);
+		m_Vel.y *= 0.95f;// * Mathf.Exp(-Time.deltaTime);
+
+		transform.position = target;
+	}
+
+	private bool onFloor = false;
 
 	private void EndAttack()
 	{
