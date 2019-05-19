@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
 	public string m_BlockAxis = "P1Block";
 	public string m_KickAxis = "P1Kick";
 	public string m_SpecialAxis = "P1Special";
+	public float startingDir = 1;
 
 	public Player[] playerPrefabOptions;
 	public Transform spawnPoint;

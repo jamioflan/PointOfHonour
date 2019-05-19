@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
 	private Vector3 myVelocity;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
+	private float startDir;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
 		m_Controller = controller;
 		m_StatBlock = controller.statBlock;
 		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
+		startDir = controller.startingDir;
 	}
 
 	public void SetInactive()
@@ -224,10 +226,26 @@ public class Player : MonoBehaviour
 			m_Vel.y = 0.0f;
 		}
 
+		if (HasDowngrade(Downgrade.WINDY))
+		{
+			m_Vel.x += startDir;
+		}
+
 		m_Vel.x *= 0.65f;// * Mathf.Exp(-Time.deltaTime);
 		m_Vel.y *= 0.95f;// * Mathf.Exp(-Time.deltaTime);
 
 		transform.position = target;
+		if (m_Vel.x != 0)
+		{
+			if (HasDowngrade(Downgrade.BACK_ATTACK))
+			{
+				transform.localScale = new Vector3(Mathf.Sign(m_Vel.x), 1, 1);
+			}
+			else
+			{
+				transform.localScale = new Vector3(Mathf.Sign(m_Vel.x) * -1f, 1, 1);
+			}
+		}
 	}
 
 	private bool onFloor = false;
