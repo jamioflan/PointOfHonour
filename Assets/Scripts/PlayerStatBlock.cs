@@ -21,7 +21,7 @@ public class PlayerStatBlock : MonoBehaviour
 			}
 		}
 
-		m_HP.text = (hp / 10) + "/" + (max / 10);
+		m_HP.text = hp + "/" + max ;
 	}
 
     void Start()
