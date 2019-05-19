@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 	public int m_InitialHealth = 10;
 
 	public string dispName = "UNNAMED";
+	public float startingDir = 1;
 
 	public bool Ded() { return m_CurrentHealth <= 0; }
 
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
 	private Vector3 myVelocity;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
+	private float currentDir;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
 		m_Controller = controller;
 		m_StatBlock = controller.statBlock;
 		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
+		currentDir = startingDir;
 	}
 
 	public void SetInactive()
@@ -222,6 +225,11 @@ public class Player : MonoBehaviour
 		if(onFloor)
 		{
 			m_Vel.y = 0.0f;
+		}
+
+		if (HasDowngrade(Downgrade.WINDY))
+		{
+			m_Vel.x += 1f;
 		}
 
 		m_Vel.x *= 0.65f;// * Mathf.Exp(-Time.deltaTime);
