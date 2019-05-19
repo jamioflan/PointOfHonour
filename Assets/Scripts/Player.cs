@@ -110,13 +110,13 @@ public class Player : MonoBehaviour
 			if (m_CurrentLockoutTimer <= 0.0f)
 			{
 				EndAttack();
+				m_CurrentLockoutTimer = 0f;
 				StartAttack(AttackType.NONE, 0.0f);
 			}
 		}
 		// If we aren't locked out, check for attack input
 		if (m_CurrentLockoutTimer <= 0.0f)
 		{
-			Debug.Log(name + " " + m_CurrentInput.punch);
 			// Punch
 			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{
@@ -162,7 +162,10 @@ public class Player : MonoBehaviour
 		if (onFloor)
 		{
 			airJumps = 0;
-			m_animation.SetAnimationInstant(Anim.IDLE, Anim.IDLE);
+			if (m_animation.getCurrentAnimation() == Anim.JUMP)
+			{
+				m_animation.SetAnimationInstant(Anim.IDLE, Anim.IDLE);
+			}
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
 		}
 		else
@@ -234,7 +237,7 @@ public class Player : MonoBehaviour
 				foreach (Collider collider in Physics.OverlapSphere(m_KickVolume.center, m_KickVolume.radius))
 				{
 					Player player = collider.GetComponent<Player>();
-					if (player != this)
+					if (player != null && player != this)
 					{
 						player.Attack(m_KickDamage);
 					}
@@ -245,7 +248,7 @@ public class Player : MonoBehaviour
 
 	private void StartAttack(AttackType type, float timer)
 	{
-		if (m_CurrentAttack != AttackType.NONE)
+		if (m_CurrentAttack == AttackType.NONE)
 		{
 			m_CurrentAttack = type;
 			m_CurrentLockoutTimer = timer;
@@ -254,12 +257,11 @@ public class Player : MonoBehaviour
 			{
 				case AttackType.PUNCH:
 					m_animation.SetAnimationInstant(Anim.PUNCH, Anim.IDLE);
-					Debug.Log("Punch Initiatiated");
 					// Punch happens immediately
 					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.center, m_PunchVolume.radius))
 					{
 						Player player = collider.GetComponent<Player>();
-						if (player != this)
+						if (player != null && player != this)
 						{
 							player.Attack(m_PunchDamage);
 						}
@@ -269,6 +271,10 @@ public class Player : MonoBehaviour
 					m_animation.SetAnimationInstant(Anim.KICK, Anim.IDLE);
 					break;
 			}
+		}
+		else if (type == AttackType.NONE)
+		{
+			m_CurrentAttack = type;
 		}
 	}
 
