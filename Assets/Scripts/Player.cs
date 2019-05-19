@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 	// Internal workings
 	private bool m_IsActive = false;
 	private PlayerStatBlock m_StatBlock;
-	private int m_CurrentHealth = 10;
+	private int m_CurrentHealth = 100;
 	private List<Downgrade> m_Downgrades = new List<Downgrade>();
 	private Controls m_CurrentInput = new Controls();
 	private Controls m_LastInput = new Controls();
