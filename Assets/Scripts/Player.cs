@@ -214,6 +214,10 @@ public class Player : MonoBehaviour
 			target.y = 4.0f;
 			onFloor = true;
 		}
+		if (target.y <= -5.0f)
+		{
+			Die();
+		}
 
 		if(onFloor)
 		{
