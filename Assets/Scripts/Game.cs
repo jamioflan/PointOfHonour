@@ -16,6 +16,7 @@ public class Game : MonoBehaviour
 	public GameObject[] m_CharacterSelect;
 	public GameObject[] m_CharacterConfirmed;
 	public Controller[] m_Controllers;
+	public AudioSource m_UISound;
 
 	public Phase m_CurrentPhase { get; private set; } = Phase.START;
 
@@ -35,6 +36,7 @@ public class Game : MonoBehaviour
 				{ 
 					m_PressAScreen.SetActive(false);
 					m_CurrentPhase = Phase.CHARACTER_SELECT;
+					m_UISound.Play();
 				}
 				break;
 			}
@@ -132,6 +134,7 @@ public class Game : MonoBehaviour
 		restartText.gameObject.SetActive(true);
 		winnerText.gameObject.SetActive(true);
 		winnerText.text = winner.dispName + " wins!";
+		m_UISound.Play();
 
 		m_CurrentPhase = Phase.RESULTS;
 	}

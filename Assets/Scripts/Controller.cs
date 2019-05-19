@@ -29,6 +29,8 @@ public class Controller : MonoBehaviour
 	private Controls m_LastInput = new Controls();
 	private Controls m_CurrentInput = new Controls();
 
+	public AudioSource m_UISound;
+
 	public void CycleCharacter()
 	{
 		if(m_SpawnedPlayer != null)
@@ -70,7 +72,8 @@ public class Controller : MonoBehaviour
 			// Punch = Switch character
 			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{
-				if(m_Ready)
+				m_UISound.Play();
+				if (m_Ready)
 				{
 					m_Ready = false;
 				}
@@ -83,6 +86,7 @@ public class Controller : MonoBehaviour
 			// Jump = Confirm character
 			if (m_CurrentInput.jump && !m_LastInput.jump)
 			{
+				m_UISound.Play();
 				m_Ready = true;
 			}
 		}
