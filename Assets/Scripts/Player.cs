@@ -73,6 +73,9 @@ public class Player : MonoBehaviour
 
 		UpdatePhysics();
 
+		Debug.Log("Punch 1: " + m_CurrentInput.punch);
+		Debug.Log("Kick 1: " + m_CurrentInput.kick);
+
 		// Update current attack
 		if (m_CurrentAttack != AttackType.NONE)
 		{
@@ -86,6 +89,8 @@ public class Player : MonoBehaviour
 		// If we aren't locked out, check for attack input
 		if (m_CurrentLockoutTimer <= 0.0f)
 		{
+			Debug.Log("Punch 2: " + m_CurrentInput.punch);
+			Debug.Log("Kick 2: " + m_CurrentInput.kick);
 			// Punch
 			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{
@@ -225,6 +230,8 @@ public class Player : MonoBehaviour
 			switch (m_CurrentAttack)
 			{
 				case AttackType.PUNCH:
+					m_animation.SetAnimationInstant(Anim.PUNCH, Anim.IDLE);
+					Debug.Log("Punch Initiatiated");
 					// Punch happens immediately
 					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.center, m_PunchVolume.radius))
 					{
@@ -235,7 +242,9 @@ public class Player : MonoBehaviour
 						}
 					}
 					break;
-
+				case AttackType.KICK:
+					m_animation.SetAnimationInstant(Anim.KICK, Anim.IDLE);
+					break;
 			}
 		}
 	}
