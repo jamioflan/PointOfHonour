@@ -82,8 +82,8 @@ public class Game : MonoBehaviour
 					UpdatePlayer(m_Controllers[0].player(), m_Controllers[1].player());
 					UpdatePlayer(m_Controllers[1].player(), m_Controllers[0].player());
 				}
-				else
-					Debug.Log("Only one player");
+				//else
+				//	Debug.Log("Only one player");
 				break;
 			}
 
