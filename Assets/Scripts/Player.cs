@@ -129,6 +129,11 @@ public class Player : MonoBehaviour
 			{
 				StartAttack(AttackType.KICK, m_KickLockoutTime);
 			}
+
+			if(m_CurrentInput.special && !m_LastInput.special)
+			{
+				StartAttack(m_SpecialAtk, m_SpecialLockoutTime);
+			}
 		}
 
 		UpdateCurrentAttack();
@@ -296,6 +301,20 @@ public class Player : MonoBehaviour
 				case AttackType.SPECIAL_ANGRY:
 					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
 					break;
+				case AttackType.SPECIAL_DIGITO:
+					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
+					Projectile p = Instantiate<Projectile>(proj);
+					p.transform.position = muzzle.position;
+					if (HasDowngrade(Downgrade.BACK_ATTACK))
+					{
+						p.speed = bulletSped * Mathf.Sign(m_Vel.x);
+					}
+					else
+
+					{
+						p.speed = bulletSped * -Mathf.Sign(m_Vel.x);
+					}
+					break;
 			}
 		}
 		else if (type == AttackType.NONE)
@@ -323,7 +342,7 @@ public class Player : MonoBehaviour
 		m_StatBlock.SetHealth(m_CurrentHealth, m_InitialHealth);
 	}
 
-	private enum AttackType
+	public enum AttackType
 	{
 		NONE,
 		PUNCH,
@@ -352,6 +371,12 @@ public class Player : MonoBehaviour
 	public float m_SpecialLockoutTime = 2.0f;
 
 	private float m_ThunkProgress = 0.0f;
+
+	[Header("Digiot")]
+	public Projectile proj;
+	public Transform muzzle;
+	public float bulletSped = 1.0f;
+	public AttackType m_SpecialAtk = AttackType.SPECIAL_ANGRY;
 
 	private void UpdateThunkAttack()
 	{
