@@ -65,6 +65,75 @@ public class Game : MonoBehaviour
 				}
 				break;
 			}
+
+			case Phase.FIGHT:
+			{
+				foreach (Controller controller in m_Controllers)
+				{
+					Player player = controller.player();
+					if (player == null)
+					{
+						Debug.LogError("OH NO");
+						return;
+					}
+				}
+				if (m_Controllers.Length > 1)
+				{
+					UpdatePlayer(m_Controllers[0].player(), m_Controllers[1].player());
+					UpdatePlayer(m_Controllers[1].player(), m_Controllers[0].player());
+				}
+				else
+					Debug.Log("Only one player");
+				break;
+			}
+
+			case Phase.RESULTS:
+			{
+				if(Input.GetAxis("Start") > 0.0f)
+				{
+					Application.LoadLevel(Application.loadedLevel);
+				}
+				break;
+			}
 		}
     }
+
+	private void UpdatePlayer( Player update, Player other )
+	{
+		if (update.Ded())
+		{
+			switch (other.NumDowngrades())
+			{
+				case 0:
+					other.GiveDowngrade(Downgrade.WINDY);
+					break;
+				case 1:
+					other.GiveDowngrade(Downgrade.BACK_ATTACK);
+					break;
+				case 2:
+					other.GiveDowngrade(Downgrade.ON_FIRE);
+					break;
+				case 3:
+					DeclareWinner(other);
+					break;
+			}
+
+			update.Respawn();
+		}
+	}
+
+
+	public TextMesh winnerText;
+	public TextMesh restartText;
+
+	private void DeclareWinner(Player winner)
+	{
+		restartText.gameObject.SetActive(true);
+		winnerText.gameObject.SetActive(true);
+		winnerText.text = winner.dispName + " wins!";
+
+		m_CurrentPhase = Phase.RESULTS;
+	}
 }
+
+
