@@ -1040,11 +1040,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8751900117325554291, guid: 50fedb98ab7c4104a937e5b9efa3126a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2000826309583285188, guid: 50fedb98ab7c4104a937e5b9efa3126a,
         type: 3}
       propertyPath: m_Name
@@ -1115,29 +1110,5 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 1076323164}
-    - target: {fileID: 5135433001210783789, guid: 50fedb98ab7c4104a937e5b9efa3126a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 5135433001210783789, guid: 50fedb98ab7c4104a937e5b9efa3126a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 5153075068434009550, guid: 50fedb98ab7c4104a937e5b9efa3126a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3987536427323153794, guid: 50fedb98ab7c4104a937e5b9efa3126a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 1412446554, guid: 50fedb98ab7c4104a937e5b9efa3126a, type: 3}
-      propertyPath: m_Text
-      value: Press Start
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50fedb98ab7c4104a937e5b9efa3126a, type: 3}
