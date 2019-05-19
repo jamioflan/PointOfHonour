@@ -41,6 +41,10 @@ public class PlayerAnimation : MonoBehaviour
 
 		m_SortedAnims[m_CurrentAnim].m_Root.SetActive(true);
 	}
+	public Anim getCurrentAnimation()
+	{
+		return m_CurrentAnim;
+	}
 
 	private void UpdateCurrentFrame()
 	{
