@@ -397,6 +397,7 @@ public class Player : MonoBehaviour
 	public float m_SpecialLockoutTime = 2.0f;
 
 	private float m_ThunkProgress = 0.0f;
+	public int m_ThunkDamage = 8;
 
 	[Header("Digiot")]
 	public Projectile proj;
@@ -420,7 +421,7 @@ public class Player : MonoBehaviour
 					Player player = collider.GetComponent<Player>();
 					if (player != null && player != this)
 					{
-						player.Attack(m_PunchDamage);
+						player.Attack(m_ThunkDamage);
 					}
 				}
 				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsR[i].transform.position, m_HitVolsR[i].radius))
@@ -428,7 +429,7 @@ public class Player : MonoBehaviour
 					Player player = collider.GetComponent<Player>();
 					if (player != null && player != this)
 					{
-						player.Attack(m_PunchDamage);
+						player.Attack(m_ThunkDamage);
 					}
 				}
 			}
