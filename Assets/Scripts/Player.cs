@@ -25,6 +25,11 @@ public class Player : MonoBehaviour
 	private readonly float gravityMag = 0.15f;
 	private float startDir;
 
+	public AudioSource s_Special;
+	public AudioSource s_Jump;
+	public AudioSource s_Punch;
+	public AudioSource s_Kick;
+
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
 	public GameObject m_FireParticleGenerator;
@@ -187,12 +192,14 @@ public class Player : MonoBehaviour
 				m_Vel.y = 26.0f;
 				airJumps = 0;
 				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
+				s_Jump.Play();
 			}
 			else if (airJumps < 1)
 			{
 				m_Vel.y = 20.0f;
 				airJumps += 1;
 				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
+				s_Jump.Play();
 			}
 		}
 
@@ -262,6 +269,7 @@ public class Player : MonoBehaviour
 		{
 			case AttackType.KICK:
 				// Kick happens at the end
+				s_Kick.Play();
 				foreach (Collider collider in Physics.OverlapSphere(m_KickVolume.transform.position, m_KickVolume.radius))
 				{
 					Debug.Log("Found collider " + collider.name);
@@ -296,10 +304,12 @@ public class Player : MonoBehaviour
 							if (HasDowngrade(Downgrade.ON_FIRE))
 							{
 								player.Attack(m_PunchDamage*2);
+								s_Punch.Play();
 							}
 							else
 							{
 								player.Attack(m_PunchDamage);
+								s_Punch.Play();
 							}
 						}
 					}
@@ -314,6 +324,7 @@ public class Player : MonoBehaviour
 				case AttackType.SPECIAL_DIGITO:
 					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
 					Projectile p = Instantiate<Projectile>(proj);
+					s_Special.Play();
 					p.transform.position = muzzle.position;
 					if (HasDowngrade(Downgrade.BACK_ATTACK))
 					{
@@ -397,6 +408,7 @@ public class Player : MonoBehaviour
 		{
 			if(pre < m_ThunkTimers[i] && post >= m_ThunkTimers[i])
 			{
+				s_Special.Play();
 				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsL[i].transform.position, m_HitVolsL[i].radius))
 				{
 					Player player = collider.GetComponent<Player>();
