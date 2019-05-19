@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 	private Controller m_Controller;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
+	private PlayerAnimation m_animation;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		m_animation = GetComponent<PlayerAnimation>();
         m_CurrentHealth = m_InitialHealth;
 	}
 
@@ -141,11 +143,13 @@ public class Player : MonoBehaviour
 			{
 				m_Vel.y = 26.0f;
 				consecJumps = 1;
+				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 			else if (consecJumps < 2)
 			{
 				m_Vel.y = 20.0f;
 				consecJumps = Mathf.Max(consecJumps + 1,2);
+				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 		}
 
@@ -179,6 +183,10 @@ public class Player : MonoBehaviour
 		if(onFloor)
 		{
 			m_Vel.y = 0.0f;
+			if (m_animation.getCurrentAnimation() == Anim.JUMP)
+			{
+				m_animation.SetAnimationInstant(Anim.IDLE, Anim.IDLE);
+			}
 		}
 
 		m_Vel.x *= 0.65f;// * Mathf.Exp(-Time.deltaTime);

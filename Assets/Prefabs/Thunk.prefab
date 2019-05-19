@@ -327,10 +327,8 @@ MonoBehaviour:
   - m_Anim: 1
     m_Root: {fileID: 2966588752387512610}
     m_Frames:
-    - m_Duration: 1
+    - m_Duration: 100
       m_Frame: {fileID: 2966588752462914671}
-    - m_Duration: 1
-      m_Frame: {fileID: 0}
 --- !u!114 &2966588753702724568
 MonoBehaviour:
   m_ObjectHideFlags: 0
