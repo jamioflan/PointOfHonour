@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
-	public ParticleSystem m_FireParticleGenerator;
+	public GameObject m_FireParticleGenerator;
 
 	// 
 	private PlayerAnimation m_animation;
