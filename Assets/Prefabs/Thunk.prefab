@@ -273,7 +273,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2966588753702724566}
   - component: {fileID: 2966588753702724565}
-  - component: {fileID: 2966588753702724567}
   - component: {fileID: 2966588753702724568}
   m_Layer: 8
   m_Name: Thunk
@@ -332,24 +331,6 @@ MonoBehaviour:
       m_Frame: {fileID: 2966588752462914671}
     - m_Duration: 1
       m_Frame: {fileID: 0}
---- !u!143 &2966588753702724567
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2966588753702724564}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.15
-  m_Radius: 0.4
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.01
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.57, z: 0}
 --- !u!114 &2966588753702724568
 MonoBehaviour:
   m_ObjectHideFlags: 0
