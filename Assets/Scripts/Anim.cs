@@ -9,5 +9,5 @@ public enum Anim
 	PUNCH,
 	KICK,
 	HIT,
-
+	SPECIAL,
 }

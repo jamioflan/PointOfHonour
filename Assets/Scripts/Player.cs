@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		
+		UpdateCurrentAttack();
 
 		// Downgrade updates
 		// Fire update
@@ -268,6 +268,10 @@ public class Player : MonoBehaviour
 				case AttackType.KICK:
 					m_animation.SetAnimationInstant(Anim.KICK, Anim.IDLE);
 					break;
+				case AttackType.SPECIAL_THUNK:
+				case AttackType.SPECIAL_ANGRY:
+					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
+					break;
 			}
 		}
 	}
@@ -313,4 +317,57 @@ public class Player : MonoBehaviour
 
 	private AttackType m_CurrentAttack = AttackType.NONE;
 	private float m_CurrentLockoutTimer = 0.0f;
+
+	[Header("ThunkSpecial")]
+	public SphereCollider[] m_HitVolsL, m_HitVolsR;
+	public float[] m_ThunkTimers;
+	public float m_SpecialLockoutTime = 2.0f;
+
+	private float m_ThunkProgress = 0.0f;
+
+	private void UpdateThunkAttack()
+	{
+		
+		float pre = m_ThunkProgress;
+		float post = m_ThunkProgress + Time.deltaTime;
+		for (int i = 0; i < 4; i++)
+		{
+			if(pre < m_ThunkTimers[i] && post >= m_ThunkTimers[i])
+			{
+				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsL[i].center, m_HitVolsL[i].radius))
+				{
+					Player player = collider.GetComponent<Player>();
+					if (player != null && player != this)
+					{
+						player.Attack(m_PunchDamage);
+					}
+				}
+				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsR[i].center, m_HitVolsR[i].radius))
+				{
+					Player player = collider.GetComponent<Player>();
+					if (player != null && player != this)
+					{
+						player.Attack(m_PunchDamage);
+					}
+				}
+			}
+			pre -= m_ThunkTimers[i];
+			post -= m_ThunkTimers[i];
+		}
+
+		m_ThunkProgress += Time.deltaTime;
+	}
+
+	private void UpdateCurrentAttack()
+	{
+		switch (m_CurrentAttack)
+		{
+			case AttackType.SPECIAL_ANGRY:
+			case AttackType.SPECIAL_THUNK:
+			{
+				UpdateThunkAttack();
+				break;
+			}
+		}
+	}
 }
