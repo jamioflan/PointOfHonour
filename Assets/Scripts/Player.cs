@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 	public ParticleSystem m_FireParticleGenerator;
 
 	// 
-
+	private PlayerAnimation m_animation;
 	public void SetActive(Controller controller)
 	{
 		m_IsActive = true;
@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_CurrentHealth = m_InitialHealth;
+		m_animation = GetComponent<PlayerAnimation>();
 	}
 
 	// Update is called once per frame

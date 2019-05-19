@@ -118,7 +118,7 @@ public class Game : MonoBehaviour
 					break;
 			}
 
-			update.Respawn();
+			//update.Respawn();
 		}
 	}
 
