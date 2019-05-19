@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStatBlock : MonoBehaviour
 {
 	public HealthPip[] m_Pips;
+	public TextMesh m_HP;
 
 	public GameObject m_OnFire, m_Windy, m_Back;
 
@@ -19,6 +20,8 @@ public class PlayerStatBlock : MonoBehaviour
 				m_Pips[i].empty.SetActive(i >= hp);
 			}
 		}
+
+		m_HP.text = hp + "/" + max;
 	}
 
     void Start()
