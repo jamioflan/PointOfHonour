@@ -366,14 +366,14 @@ MonoBehaviour:
   - m_Anim: 2
     m_Root: {fileID: 7550713890588249695}
     m_Frames:
-    - m_Duration: 1
+    - m_Duration: 0.15
       m_Frame: {fileID: 7940118951484964785}
   - m_Anim: 3
     m_Root: {fileID: 2942120015213360786}
     m_Frames:
-    - m_Duration: 0.5
+    - m_Duration: 0.3
       m_Frame: {fileID: 9152635121526631977}
-    - m_Duration: 1
+    - m_Duration: 0.1
       m_Frame: {fileID: 175214508747362678}
 --- !u!114 &2966588753702724568
 MonoBehaviour:
@@ -388,13 +388,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialHealth: 10
+  dispName: UNNAMED
   m_FireParticleGenerator: {fileID: 0}
-  m_PunchLockoutTime: 0.5
+  m_PunchLockoutTime: 0.15
   m_PunchDamage: 10
-  m_PunchVolume: {fileID: 0}
-  m_KickLockoutTime: 1.5
+  m_PunchVolume: {fileID: 1530345554514334138}
+  m_KickLockoutTime: 0.3
   m_KickDamage: 32
-  m_KickVolume: {fileID: 0}
+  m_KickVolume: {fileID: 3534735976151135636}
 --- !u!1 &2966588753751289082
 GameObject:
   m_ObjectHideFlags: 0
