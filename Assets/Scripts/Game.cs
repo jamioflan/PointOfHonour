@@ -79,8 +79,8 @@ public class Game : MonoBehaviour
 				}
 				if (m_Controllers.Length > 1)
 				{
-					UpdatePlayer(m_Controllers[0].player(), m_Controllers[1].player());
-					UpdatePlayer(m_Controllers[1].player(), m_Controllers[0].player());
+					UpdatePlayer(m_Controllers[0], m_Controllers[1]);
+					UpdatePlayer(m_Controllers[1], m_Controllers[0]);
 				}
 				//else
 				//	Debug.Log("Only one player");
@@ -119,7 +119,7 @@ public class Game : MonoBehaviour
 			}
 
 			update.player().Respawn();
-			update.player().transform.position = update.spawnPoint;
+			update.player().transform.position = update.spawnPoint.position;
 		}
 	}
 
