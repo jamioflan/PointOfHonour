@@ -186,13 +186,15 @@ public class Player : MonoBehaviour
 			{
 				m_Vel.y = 26.0f;
 				airJumps = 0;
-				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
+				if(m_animation.getCurrentAnimation() == Anim.IDLE)
+					m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 			else if (airJumps < 1)
 			{
 				m_Vel.y = 20.0f;
 				airJumps += 1;
-				m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
+				if (m_animation.getCurrentAnimation() == Anim.IDLE)
+					m_animation.SetAnimationInstant(Anim.JUMP, Anim.JUMP);
 			}
 		}
 
@@ -310,6 +312,7 @@ public class Player : MonoBehaviour
 				case AttackType.SPECIAL_THUNK:
 				case AttackType.SPECIAL_ANGRY:
 					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
+					m_ThunkProgress = 0.0f;
 					break;
 				case AttackType.SPECIAL_DIGITO:
 					m_animation.SetAnimationInstant(Anim.SPECIAL, Anim.IDLE);
@@ -317,12 +320,12 @@ public class Player : MonoBehaviour
 					p.transform.position = muzzle.position;
 					if (HasDowngrade(Downgrade.BACK_ATTACK))
 					{
-						p.speed = bulletSped * Mathf.Sign(m_Vel.x);
+						p.speed = bulletSped * -Mathf.Sign(m_Vel.x);
 					}
 					else
 
 					{
-						p.speed = bulletSped * -Mathf.Sign(m_Vel.x);
+						p.speed = bulletSped * Mathf.Sign(m_Vel.x);
 					}
 					break;
 			}
@@ -395,7 +398,8 @@ public class Player : MonoBehaviour
 		float post = m_ThunkProgress + Time.deltaTime;
 		for (int i = 0; i < 4; i++)
 		{
-			if(pre < m_ThunkTimers[i] && post >= m_ThunkTimers[i])
+			
+			if (pre < m_ThunkTimers[i] && post >= m_ThunkTimers[i])
 			{
 				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsL[i].transform.position, m_HitVolsL[i].radius))
 				{
@@ -418,7 +422,7 @@ public class Player : MonoBehaviour
 			post -= m_ThunkTimers[i];
 		}
 
-		m_ThunkProgress += Time.deltaTime;
+		m_ThunkProgress = m_ThunkProgress + Time.deltaTime;
 	}
 
 	private void UpdateCurrentAttack()
