@@ -261,11 +261,13 @@ public class Player : MonoBehaviour
 		{
 			case AttackType.KICK:
 				// Kick happens at the end
-				foreach (Collider collider in Physics.OverlapSphere(m_KickVolume.center, m_KickVolume.radius))
+				foreach (Collider collider in Physics.OverlapSphere(m_KickVolume.transform.position, m_KickVolume.radius))
 				{
+					Debug.Log("Found collider " + collider.name);
 					Player player = collider.GetComponent<Player>();
 					if (player != null && player != this)
 					{
+						Debug.Log("Found player " + collider.name);
 						player.Attack(m_KickDamage);
 					}
 				}
@@ -285,7 +287,7 @@ public class Player : MonoBehaviour
 				case AttackType.PUNCH:
 					m_animation.SetAnimationInstant(Anim.PUNCH, Anim.IDLE);
 					// Punch happens immediately
-					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.center, m_PunchVolume.radius))
+					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.transform.position, m_PunchVolume.radius))
 					{
 						Player player = collider.GetComponent<Player>();
 						if (player != null && player != this)
@@ -387,7 +389,7 @@ public class Player : MonoBehaviour
 		{
 			if(pre < m_ThunkTimers[i] && post >= m_ThunkTimers[i])
 			{
-				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsL[i].center, m_HitVolsL[i].radius))
+				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsL[i].transform.position, m_HitVolsL[i].radius))
 				{
 					Player player = collider.GetComponent<Player>();
 					if (player != null && player != this)
@@ -395,7 +397,7 @@ public class Player : MonoBehaviour
 						player.Attack(m_PunchDamage);
 					}
 				}
-				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsR[i].center, m_HitVolsR[i].radius))
+				foreach (Collider collider in Physics.OverlapSphere(m_HitVolsR[i].transform.position, m_HitVolsR[i].radius))
 				{
 					Player player = collider.GetComponent<Player>();
 					if (player != null && player != this)
