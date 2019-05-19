@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
 		switch (downgrade)
 		{
 			case Downgrade.ON_FIRE:
+				m_FireParticleGenerator.SetActive(true);
 				m_StatBlock.m_OnFire.SetActive(true);
 				break;
 			case Downgrade.WINDY:
