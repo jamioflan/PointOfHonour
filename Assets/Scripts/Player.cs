@@ -300,6 +300,7 @@ public class Player : MonoBehaviour
 			{
 				case AttackType.PUNCH:
 					m_animation.SetAnimationInstant(Anim.PUNCH, Anim.IDLE);
+					s_Punch.Play();
 					// Punch happens immediately
 					foreach (Collider collider in Physics.OverlapSphere(m_PunchVolume.transform.position, m_PunchVolume.radius))
 					{
@@ -309,12 +310,10 @@ public class Player : MonoBehaviour
 							if (HasDowngrade(Downgrade.ON_FIRE))
 							{
 								player.Attack(m_PunchDamage*2);
-								s_Punch.Play();
 							}
 							else
 							{
 								player.Attack(m_PunchDamage);
-								s_Punch.Play();
 							}
 						}
 					}
