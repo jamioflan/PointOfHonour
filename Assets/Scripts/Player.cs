@@ -15,13 +15,8 @@ public class Player : MonoBehaviour
 	private Controls m_LastInput;
 	private int consecJumps = 0;
 	private Controller m_Controller;
-	private Vector3 myVelocity;
-	private float jumpTimer;
-	private readonly float jumpLength = 0.1f;
-	private readonly float jumpMag = 0.3f;
 	private readonly float moveSpeed = 4.0f;
 	private readonly float gravityMag = 0.15f;
-	private readonly float dragMag = 0.13f;
 
 	// On Fire Runtime Data
 	private float timeSinceLastFire = 0.0f;
@@ -73,57 +68,6 @@ public class Player : MonoBehaviour
 		m_CurrentInput.kick = Input.GetAxis(m_Controller.m_KickAxis) > 0.0f;
 		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
-
-		/*
-		// X Axis Player Movement
-		CharacterController thisChar = GetComponent<CharacterController>();
-
-		// Switch directions quickly
-		if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(myVelocity.x))
-		{
-			myVelocity.x = 0;
-		}
-
-		// Drag
-		myVelocity *= (1 - dragMag) * Mathf.Exp(-Time.deltaTime);
-		
-		myVelocity += new Vector3(moveSpeed * m_CurrentInput.moveX*Time.deltaTime, 0, 0);
-
-		// Player Jump & Gravity
-		if (thisChar.isGrounded)
-		{
-			consecJumps = 0;
-			myVelocity.y = 0;
-		}
-		else
-		{
-			myVelocity += Physics.gravity * Time.deltaTime * gravityMag;
-		}
-
-		if (m_CurrentInput.jump && !m_LastInput.jump && jumpTimer == 0)
-		{
-			if (thisChar.isGrounded)
-			{
-				consecJumps += 1;
-				jumpTimer = jumpLength;
-			}
-			
-			else if (consecJumps < 2)
-			{
-				consecJumps += 1;
-				jumpTimer = 0.75f * jumpLength;
-			}
-		}
-
-		if (jumpTimer > 0)
-		{
-			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
-			myVelocity.y = jumpMag;
-		}
-
-		// Push movement
-		thisChar.Move(myVelocity);
-		*/
 
 		UpdatePhysics();
 
@@ -183,14 +127,26 @@ public class Player : MonoBehaviour
 			m_Vel.x = 0.0f;
 
 		if(onFloor)
+		{
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX, 0, 0);
+			consecJumps = 0;
+		}
 		else
 			m_Vel += new Vector3(moveSpeed * m_CurrentInput.moveX * 0.75f, 0, 0);
 
 		// Jump
 		if (m_CurrentInput.jump && !m_LastInput.jump)
 		{
-			m_Vel.y = 26.0f;
+			if (onFloor)
+			{
+				m_Vel.y = 26.0f;
+				consecJumps = 1;
+			}
+			else if (consecJumps < 2)
+			{
+				m_Vel.y = 20.0f;
+				consecJumps = Mathf.Max(consecJumps + 1,2);
+			}
 		}
 
 		// Collision detec
