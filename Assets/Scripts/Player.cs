@@ -91,61 +91,7 @@ public class Player : MonoBehaviour
 		m_CurrentInput.block = Input.GetAxis(m_Controller.m_BlockAxis) > 0.0f;
 		m_CurrentInput.special = Input.GetAxis(m_Controller.m_SpecialAxis) > 0.0f;
 
-		/*
-		// X Axis Player Movement
-		CharacterController thisChar = GetComponent<CharacterController>();
-
-		// Switch directions quickly
-		if (Mathf.Sign(m_CurrentInput.moveX) != Mathf.Sign(myVelocity.x))
-		{
-			myVelocity.x = 0;
-		}
-
-		// Drag
-		myVelocity *= (1 - dragMag) * Mathf.Exp(-Time.deltaTime);
-		
-		myVelocity += new Vector3(moveSpeed * m_CurrentInput.moveX*Time.deltaTime, 0, 0);
-
-		// Player Jump & Gravity
-		if (thisChar.isGrounded)
-		{
-			consecJumps = 0;
-			myVelocity.y = 0;
-		}
-		else
-		{
-			myVelocity += Physics.gravity * Time.deltaTime * gravityMag;
-		}
-
-		if (m_CurrentInput.jump && !m_LastInput.jump && jumpTimer == 0)
-		{
-			if (thisChar.isGrounded)
-			{
-				consecJumps += 1;
-				jumpTimer = jumpLength;
-			}
-			
-			else if (consecJumps < 2)
-			{
-				consecJumps += 1;
-				jumpTimer = 0.75f * jumpLength;
-			}
-		}
-
-		if (jumpTimer > 0)
-		{
-			jumpTimer = Mathf.Max(jumpTimer - Time.deltaTime, 0);
-			myVelocity.y = jumpMag;
-		}
-
-		// Push movement
-		thisChar.Move(myVelocity);
-		*/
-
 		UpdatePhysics();
-
-		Debug.Log("Punch 1: " + m_CurrentInput.punch);
-		Debug.Log("Kick 1: " + m_CurrentInput.kick);
 
 		// Update current attack
 		if (m_CurrentAttack != AttackType.NONE)
@@ -160,8 +106,6 @@ public class Player : MonoBehaviour
 		// If we aren't locked out, check for attack input
 		if (m_CurrentLockoutTimer <= 0.0f)
 		{
-			Debug.Log("Punch 2: " + m_CurrentInput.punch);
-			Debug.Log("Kick 2: " + m_CurrentInput.kick);
 			// Punch
 			if (m_CurrentInput.punch && !m_LastInput.punch)
 			{
